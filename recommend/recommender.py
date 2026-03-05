@@ -1,37 +1,45 @@
 ﻿from __future__ import annotations
 
-from typing import Any
+from engine.actions import generate_actions
+from engine.state import GameState
 
 
-def _enemy_total_health(state: dict[str, Any]) -> int:
-    return int(state.get("enemy_hero_health", 30)) + int(state.get("enemy_hero_armor", 0))
+def _enemy_total_health(state: GameState) -> int:
+    return state.enemy_hero.health + state.enemy_hero.armor
 
 
-def _my_board_attack(state: dict[str, Any]) -> int:
-    board = state.get("my_board", [])
-    return sum(int(minion.get("attack", 0)) for minion in board)
+def _my_board_attack(state: GameState) -> int:
+    return sum(minion.attack for minion in state.my_board)
 
 
-def _enemy_board_attack(state: dict[str, Any]) -> int:
-    board = state.get("enemy_board", [])
-    return sum(int(minion.get("attack", 0)) for minion in board)
+def _enemy_board_attack(state: GameState) -> int:
+    return sum(minion.attack for minion in state.enemy_board)
 
 
-def recommend_top3(state: dict[str, Any]) -> list[dict[str, Any]]:
+def recommend_top3(state: GameState) -> list[dict[str, object]]:
     """Return top-3 card recommendations with scores and short explanations."""
-    mana = int(state.get("mana", 0))
-    hand = list(state.get("my_hand", []))
+    mana = state.mana
     enemy_hp = _enemy_total_health(state)
     my_attack = _my_board_attack(state)
     enemy_attack = _enemy_board_attack(state)
 
-    recommendations: list[dict[str, Any]] = []
+    actions = generate_actions(state)
+    playable_cards = {
+        action.card_id
+        for action in actions
+        if action.action_type == "PlayCard" and action.card_id is not None
+    }
 
-    for card in hand:
+    recommendations: list[dict[str, object]] = []
+
+    for card in state.hand:
+        if card.name not in playable_cards:
+            continue
+
         score = 0.0
         reasons: list[str] = []
 
-        if card == "Fireball":
+        if card.name == "Fireball":
             score += 7.0
             reasons.append("direct damage finisher")
             if mana >= 4:
@@ -41,21 +49,21 @@ def recommend_top3(state: dict[str, Any]) -> list[dict[str, Any]]:
                 score += 4.0
                 reasons.append("sets up or enables lethal")
 
-        elif card == "Wolfrider":
+        elif card.name == "Wolfrider":
             score += 5.0
             reasons.append("charge allows immediate pressure")
             if mana >= 3:
                 score += 1.0
                 reasons.append("fits current mana")
 
-        elif card == "River Crocolisk":
+        elif card.name == "River Crocolisk":
             score += 3.0
             reasons.append("solid low-cost tempo")
             if mana >= 2:
                 score += 1.0
                 reasons.append("easy to curve out")
 
-        elif card == "Boulderfist Ogre":
+        elif card.name == "Boulderfist Ogre":
             score += 4.0
             reasons.append("high raw stats")
             if mana < 6:
@@ -66,17 +74,17 @@ def recommend_top3(state: dict[str, Any]) -> list[dict[str, Any]]:
             score += 1.0
             reasons.append("default heuristic score")
 
-        if enemy_attack >= 6 and card in {"Fireball", "Wolfrider"}:
+        if enemy_attack >= 6 and card.name in {"Fireball", "Wolfrider"}:
             score += 0.5
             reasons.append("helps stabilize initiative")
 
         recommendations.append(
             {
-                "card": card,
+                "card": card.name,
                 "score": round(score, 2),
                 "explanation": "; ".join(reasons),
             }
         )
 
-    recommendations.sort(key=lambda x: x["score"], reverse=True)
+    recommendations.sort(key=lambda x: float(x["score"]), reverse=True)
     return recommendations[:3]

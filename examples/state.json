@@ -1,14 +1,17 @@
 ﻿{
   "mana": 5,
-  "my_hand": ["Fireball", "River Crocolisk", "Wolfrider", "Boulderfist Ogre"],
+  "my_hand": [
+    {"name": "Fireball", "cost": 4},
+    {"name": "River Crocolisk", "cost": 2},
+    {"name": "Wolfrider", "cost": 3},
+    {"name": "Boulderfist Ogre", "cost": 6}
+  ],
   "my_board": [
     {"name": "Chillwind Yeti", "attack": 4, "health": 5}
   ],
   "enemy_board": [
     {"name": "Boulderfist Ogre", "attack": 6, "health": 7}
   ],
-  "hero_health": 20,
-  "hero_armor": 0,
-  "enemy_hero_health": 14,
-  "enemy_hero_armor": 0
+  "my_hero": {"health": 20, "armor": 0},
+  "enemy_hero": {"health": 14, "armor": 0}
 }

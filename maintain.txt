@@ -7,3 +7,15 @@
 - Added tests/conftest.py to include project root in sys.path for pytest discovery
 [2026-03-04] Encoding fix:
 - Read JSON with utf-8-sig in main.py and tests/test_smoke.py to handle BOM
+[2026-03-04] Typed state refactor:
+- Added engine/state.py dataclasses: Card, Minion, Hero, GameState
+- Added GameState.from_json(path_or_dict) with validation and defaults
+- Refactored recommender to accept GameState instead of raw dict
+- Updated examples/state.json to schema with my_hero/enemy_hero and typed hand entries
+- Updated main.py to load via GameState.from_json
+- Expanded tests to cover JSON loading and recommendation smoke case
+[2026-03-04] Milestone: Candidate Generator
+- Added engine/actions.py with Action dataclass and generate_actions(state)
+- Added GameState.hand property alias for action generation flow
+- Refactored recommender to use generate_actions and only score playable cards
+- Added tests/test_actions.py for mana filtering and non-empty action generation
