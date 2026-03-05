@@ -26,8 +26,7 @@ def generate_actions(state: GameState) -> list[Action]:
 
     for card in state.hand:
         if card.cost <= state.mana:
-            target = "enemy_hero" if card.name == "Fireball" else None
-            actions.append(Action.PlayCard(card_id=card.name, target=target))
+            actions.append(Action.PlayCard(card_id=card.name, target=None))
 
     actions.append(Action.HeroPower(target=None))
     return actions

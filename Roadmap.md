@@ -41,6 +41,8 @@ Completed:
 - [x] GameState schema
 - [x] Candidate Generator
 - [x] Scoring System
+- [x] Recommendation Engine
+- [x] CLI demo
 
 Next milestone:
-Recommendation Engine
+Threat evaluation

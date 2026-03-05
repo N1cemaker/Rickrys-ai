@@ -24,3 +24,13 @@
 - Refactored recommender to run generate_actions -> score_action -> rank -> top_k
 - Updated CLI output to include score breakdown details
 - Added tests/test_scoring.py for deterministic scoring assertions
+[2026-03-04] Milestone: Recommendation Engine stabilization
+- Removed card-specific targeting hacks from engine/actions.py (generic action generation)
+- Added stable Recommendation dataclass API in recommend/recommender.py
+- Updated recommend_top3(...) to return list[Recommendation]
+- Added CLI flags: --topk and optional --json output format
+- Updated smoke/actions tests for the new Recommendation API and generic action targets
+[2026-03-04] Milestone: CLI demo
+- Improved human-readable CLI output with action, score, breakdown, and reasons
+- Kept CLI flags: --topk and --json
+- Added README.md with project intro, quickstart commands, and example CLI output

@@ -11,6 +11,7 @@ def test_generate_actions_filters_cards_above_mana() -> None:
 
     assert "Boulderfist Ogre" not in card_ids
     assert "Fireball" in card_ids
+    assert all(a.target is None for a in play_cards)
 
 
 def test_generate_actions_has_at_least_one_for_example_state() -> None:

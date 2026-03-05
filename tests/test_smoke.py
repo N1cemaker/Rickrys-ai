@@ -16,5 +16,5 @@ def test_recommend_top3_smoke() -> None:
     results = recommend_top3(state)
 
     assert len(results) == 3
-    assert results[0]["score"] >= results[1]["score"] >= results[2]["score"]
-    assert all("action" in item and "score" in item and "breakdown" in item for item in results)
+    assert results[0].score >= results[1].score >= results[2].score
+    assert all(item.action is not None and item.breakdown is not None for item in results)
