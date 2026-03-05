@@ -1,0 +1,14 @@
+﻿{
+  "mana": 5,
+  "my_hand": ["Fireball", "River Crocolisk", "Wolfrider", "Boulderfist Ogre"],
+  "my_board": [
+    {"name": "Chillwind Yeti", "attack": 4, "health": 5}
+  ],
+  "enemy_board": [
+    {"name": "Boulderfist Ogre", "attack": 6, "health": 7}
+  ],
+  "hero_health": 20,
+  "hero_armor": 0,
+  "enemy_hero_health": 14,
+  "enemy_hero_armor": 0
+}
