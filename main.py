@@ -1,4 +1,3 @@
-﻿import json
 from pathlib import Path
 
 from engine.state import GameState
@@ -11,8 +10,16 @@ def main() -> None:
     results = recommend_top3(state)
 
     for idx, item in enumerate(results, start=1):
-        print(f"{idx}. {item['card']} (score={item['score']})")
-        print(f"   {item['explanation']}")
+        breakdown = item["breakdown"]
+        print(f"{idx}. {item['action']} (score={item['score']})")
+        print(
+            "   "
+            f"tempo={breakdown.tempo}, "
+            f"board_control={breakdown.board_control}, "
+            f"damage={breakdown.damage}, "
+            f"mana_efficiency={breakdown.mana_efficiency}"
+        )
+        print(f"   reasons: {'; '.join(item['reasons'])}")
 
 
 if __name__ == "__main__":

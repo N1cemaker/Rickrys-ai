@@ -40,6 +40,7 @@ Phase: 1 - Engine Prototype
 Completed:
 - [x] GameState schema
 - [x] Candidate Generator
+- [x] Scoring System
 
 Next milestone:
-Scoring System
+Recommendation Engine
